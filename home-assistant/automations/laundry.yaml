@@ -3,11 +3,11 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.washing_machine_power
-      below: 1
+      below: 2
       for: "00:10:00"
   condition:
     - condition: template
-      value_template: "{{ states('sensor.washing_machine_power') | float(0) < 1 }}"
+      value_template: "{{ states('sensor.washing_machine_power') | float(0) < 2 }}"
   action:
     - service: rest_command.create_trello_card
       data:
