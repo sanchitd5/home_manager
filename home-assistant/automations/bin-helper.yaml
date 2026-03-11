@@ -1,0 +1,30 @@
+- alias: "Bins Out Reminder"
+  id: bins_out_reminder
+  trigger:
+    - platform: time
+      at: "18:00:00"
+  condition:
+    - condition: time
+      weekday:
+        - thu
+  action:
+    - variables:
+        anchor_date: "2026-03-12"
+        week_offset: >-
+          {{ ((as_timestamp(now()) - as_timestamp(strptime(anchor_date, '%Y-%m-%d'))) /
+          604800) | int(0) }}
+        bin_type: >-
+          {% if (week_offset | abs) % 2 == 0 %}
+            Red + Green Bin
+          {% else %}
+            Yellow Bin
+          {% endif %}
+    - service: input_text.set_value
+      target:
+        entity_id: input_text.tonight_bin_type
+      data:
+        value: "{{ bin_type }}"
+    - service: rest_command.create_trello_card
+      data:
+        name: "Put Bins Out - {{ bin_type }}"
+  mode: single

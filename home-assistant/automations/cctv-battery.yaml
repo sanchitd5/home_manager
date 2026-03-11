@@ -1,0 +1,15 @@
+- alias: "CCTV Battery Low -> Trello Task"
+  id: cctv_battery_low_trello_task
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.back_door_battery
+      below: 20
+  condition: []
+  action:
+    - service: rest_command.create_trello_card
+      data:
+        name: "Charge Garage Indoor Camera"
+    - service: rest_command.send_telegram_message
+      data:
+        message: "Battery low: Garage Indoor Camera under 20%."
+  mode: single

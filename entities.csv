@@ -1,0 +1,21 @@
+Entity,Device,Area,Integration,Status
+vacuum.robovac,E28 Omni,Home,eufy_robovac,docked
+vacuum.2bavs_ab6031x_44pe,Eufy Omni E28,Home,eufy_robovac,idle
+sensor.robovac_battery,E28 Omni,Home,eufy_robovac,100
+sensor.2bavs_ab6031x_44pe_battery,Eufy Omni E28,Home,eufy_robovac,100
+sensor.washing_machine_power,Washing Machine,Laundry,tuya_or_localtuya,1
+sensor.washing_machine_current_power,Washing Machine,Laundry,tuya_or_localtuya,1.0
+binary_sensor.washing_machine_running,Washing Machine,Laundry,tuya_or_localtuya,off
+switch.washing_machine,Washing Machine,Laundry,tuya_or_localtuya,on
+sensor.dundermifflinx_download_speed,DunderMifflinX Router,Network,eero,2087.291224
+sensor.dundermifflinx_upload_speed,DunderMifflinX Router,Network,eero,189.500304
+camera.backyard,Backyard Camera,Backyard,eufy_security,idle
+camera.garage,Garage Camera,Garage,eufy_security,idle
+camera.kitchen,Kitchen Camera,Kitchen,eufy_security,idle
+camera.front_door,Front Door Camera,Front Door,eufy_security,idle
+camera.doorbell,Doorbell Camera,Front Door,eufy_security,idle
+sensor.back_door_battery,Garage Indoor Camera Battery,Garage,eufy_security,59.0
+sensor.room_door_battery,Left Backyard Door Camera Battery,Backyard,eufy_security,unavailable
+sensor.backyard_sliding_door_sensor_battery,Backyard Sliding Door Sensor Battery,Backyard,eufy_security,74
+sensor.garage_backyard_door_sensor_battery,Garage Backyard Door Sensor Battery,Backyard,eufy_security,67
+update.eufy_security_update,Eufy Security,Home,eufy_security,off

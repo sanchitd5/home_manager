@@ -1,0 +1,20 @@
+# Env files
+.env
+.env.*
+!.env.example
+!*.example
+
+# Runtime
+*.log
+*.pid
+tmp/
+backups/
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+
+# OS
+.DS_Store

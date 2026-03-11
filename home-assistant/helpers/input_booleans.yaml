@@ -1,0 +1,28 @@
+input_boolean:
+  trello_is_source_of_truth:
+    name: Trello Is Source Of Truth
+    icon: mdi:trello
+    initial: true
+
+input_text:
+  tonight_bin_type:
+    name: Tonight Bin Type
+    max: 64
+    initial: Red + Green Bin
+
+  trello_api_key:
+    name: Trello API Key
+    max: 128
+  trello_api_token:
+    name: Trello API Token
+    max: 256
+  trello_todo_list_id:
+    name: Trello ToDo List ID
+    max: 64
+
+  telegram_bot_token:
+    name: Telegram Bot Token
+    max: 128
+  telegram_chat_id:
+    name: Telegram Chat ID
+    max: 64

@@ -1,0 +1,100 @@
+{
+  "name": "network-check",
+  "nodes": [
+    {
+      "id": "cron_30m",
+      "name": "Every 30 Minutes",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [220, 260],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "speedtest",
+      "name": "Get Speed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [460, 260],
+      "parameters": {
+        "url": "https://api.fast.com/netflix/speedtest/v2?https=true"
+      }
+    },
+    {
+      "id": "if_slow",
+      "name": "Below Threshold?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [700, 260],
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{Number($json.targets?.[0]?.s || 0)}}",
+              "operation": "smaller",
+              "value2": "={{Number($env.FAST_COM_THRESHOLD_MBPS || 50)}}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "trello_isp",
+      "name": "Create Check ISP Task",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [940, 180],
+      "parameters": {
+        "url": "={{'https://api.trello.com/1/cards?idList=' + $env.TRELLO_LIST_TODO_ID + '&name=' + encodeURIComponent('Check ISP') + '&key=' + $env.TRELLO_API_KEY + '&token=' + $env.TRELLO_API_TOKEN}}"
+      }
+    }
+  ],
+  "connections": {
+    "Every 30 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Get Speed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Speed": {
+      "main": [
+        [
+          {
+            "node": "Below Threshold?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Below Threshold?": {
+      "main": [
+        [
+          {
+            "node": "Create Check ISP Task",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "ha-event-ingest",
+  "nodes": [
+    {
+      "id": "webhook_ha",
+      "name": "HA Event Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [220, 260],
+      "parameters": {
+        "path": "webhook/ha-events",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "log_event",
+      "name": "Normalize Event",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [470, 260],
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "event_type",
+              "value": "={{$json.event_type || 'unknown'}}"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "HA Event Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

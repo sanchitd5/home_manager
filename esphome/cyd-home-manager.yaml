@@ -1,0 +1,44 @@
+esphome:
+  name: cyd-home-manager
+  friendly_name: CYD Home Manager
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+wifi:
+  ssid: "REPLACE_WIFI_SSID"
+  password: "REPLACE_WIFI_PASSWORD"
+
+logger:
+api:
+ota:
+
+font:
+  - file: "gfonts://Roboto"
+    id: font_small
+    size: 16
+
+text_sensor:
+  - platform: homeassistant
+    id: tonight_bin
+    entity_id: input_text.tonight_bin_type
+
+  - platform: template
+    id: todo_count
+    name: "Trello Todo Count"
+    lambda: |-
+      return {"REPLACE_WITH_SENSOR_OR_API"};
+
+display:
+  - platform: st7789v
+    model: "CUSTOM"
+    cs_pin: GPIO5
+    dc_pin: GPIO16
+    reset_pin: GPIO23
+    rotation: 0
+    lambda: |-
+      it.print(10, 10, id(font_small), "Home Manager");
+      it.printf(10, 35, id(font_small), "To Do: %s", id(todo_count).state.c_str());
+      it.printf(10, 60, id(font_small), "Tonight: %s", id(tonight_bin).state.c_str());

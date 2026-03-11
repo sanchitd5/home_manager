@@ -1,0 +1,18 @@
+- alias: "Laundry Finished -> Trello Task"
+  id: laundry_finished_trello_task
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.washing_machine_power
+      below: 1
+      for: "00:10:00"
+  condition:
+    - condition: template
+      value_template: "{{ states('sensor.washing_machine_power') | float(0) < 1 }}"
+  action:
+    - service: rest_command.create_trello_card
+      data:
+        name: "Empty Washing Machine"
+    - service: rest_command.send_telegram_message
+      data:
+        message: "Laundry cycle appears complete."
+  mode: single

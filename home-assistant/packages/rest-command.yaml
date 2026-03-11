@@ -1,0 +1,18 @@
+rest_command:
+  create_trello_card:
+    url: >-
+      https://api.trello.com/1/cards?idList={{ states('input_text.trello_todo_list_id')
+      }}&name={{ name | urlencode }}&key={{ states('input_text.trello_api_key')
+      }}&token={{ states('input_text.trello_api_token') }}
+    method: post
+
+  send_telegram_message:
+    url: >-
+      https://api.telegram.org/bot{{ states('input_text.telegram_bot_token')
+      }}/sendMessage
+    method: post
+    headers:
+      Content-Type: application/json
+    payload: >-
+      {"chat_id":"{{ states('input_text.telegram_chat_id') }}","text":"{{
+      message }}"}

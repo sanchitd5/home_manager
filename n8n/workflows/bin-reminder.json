@@ -1,0 +1,71 @@
+{
+  "name": "bin-reminder",
+  "nodes": [
+    {
+      "id": "cron_thursday",
+      "name": "Every Thursday 18:00",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [220, 260],
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "custom",
+              "cronExpression": "0 18 * * 4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compute_bin",
+      "name": "Compute Bin Type",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 260],
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const anchor = new Date('2026-03-12T18:00:00');\nconst now = new Date();\nconst weeks = Math.floor((now - anchor) / (7*24*60*60*1000));\nconst even = Math.abs(weeks) % 2 === 0;\nconst binType = even ? 'Red + Green Bin' : 'Yellow Bin';\nreturn [{ binType }];"
+      }
+    },
+    {
+      "id": "trello_card",
+      "name": "Create Trello Card",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [750, 260],
+      "parameters": {
+        "url": "={{'https://api.trello.com/1/cards?idList=' + $env.TRELLO_LIST_TODO_ID + '&name=' + encodeURIComponent('Put Bins Out - ' + $json.binType) + '&key=' + $env.TRELLO_API_KEY + '&token=' + $env.TRELLO_API_TOKEN}}"
+      }
+    }
+  ],
+  "connections": {
+    "Every Thursday 18:00": {
+      "main": [
+        [
+          {
+            "node": "Compute Bin Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute Bin Type": {
+      "main": [
+        [
+          {
+            "node": "Create Trello Card",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,23 @@
+title: Home Manager
+views:
+  - title: Tasks
+    path: tasks
+    cards:
+      - type: markdown
+        title: Tonight's Bin
+        content: "{{ states('input_text.tonight_bin_type') }}"
+
+      - type: entity
+        entity: input_boolean.trello_is_source_of_truth
+        name: Completion Authority
+
+      - type: iframe
+        title: Trello Board
+        url: https://trello.com/b/REPLACE_BOARD_SLUG
+        aspect_ratio: 80%
+
+      - type: markdown
+        title: Notes
+        content: |
+          - Completion state is Trello-first
+          - Anchor date: 2026-03-12 = Red + Green Bin

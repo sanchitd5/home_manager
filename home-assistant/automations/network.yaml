@@ -1,0 +1,15 @@
+- alias: "Network Degraded -> Trello Task"
+  id: network_degraded_trello_task
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.dundermifflinx_download_speed
+      below: 50
+      for: "00:05:00"
+  action:
+    - service: rest_command.create_trello_card
+      data:
+        name: "Check ISP"
+    - service: rest_command.send_telegram_message
+      data:
+        message: "Network dropped below 50 Mbps."
+  mode: single

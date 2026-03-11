@@ -1,0 +1,111 @@
+{
+  "name": "trello-ha-telegram-sync",
+  "nodes": [
+    {
+      "id": "webhook_trello",
+      "name": "Trello Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [220, 260],
+      "parameters": {
+        "path": "webhook/trello-events",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "if_doing",
+      "name": "Card In Doing?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 260],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.action?.data?.listAfter?.name || ''}}",
+              "operation": "equal",
+              "value2": "Doing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ha_vacuum_start",
+      "name": "HA Vacuum Start",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [700, 180],
+      "parameters": {
+        "url": "={{$env.HA_BASE_URL + '/api/services/vacuum/start'}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{'Bearer ' + $env.HA_LONG_LIVED_TOKEN}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "jsonBody": "={\"entity_id\":\"{{$env.HA_VACUUM_ENTITY_ID}}\"}"
+      }
+    },
+    {
+      "id": "telegram_notify",
+      "name": "Telegram Notify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [930, 180],
+      "parameters": {
+        "url": "={{'https://api.telegram.org/bot' + $env.TELEGRAM_BOT_TOKEN + '/sendMessage'}}",
+        "sendBody": true,
+        "jsonBody": "={\"chat_id\":\"{{$env.TELEGRAM_CHAT_ID}}\",\"text\":\"Started cleaning from Trello Doing card.\"}"
+      }
+    }
+  ],
+  "connections": {
+    "Trello Webhook": {
+      "main": [
+        [
+          {
+            "node": "Card In Doing?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Card In Doing?": {
+      "main": [
+        [
+          {
+            "node": "HA Vacuum Start",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "HA Vacuum Start": {
+      "main": [
+        [
+          {
+            "node": "Telegram Notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
