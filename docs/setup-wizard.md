@@ -1,6 +1,6 @@
 # Setup Wizard Guide
 
-Use the wizard when Pi 4B is not flashed yet and Home Assistant is already live.
+Use the wizard when Pi 4B is freshly flashed/booted and Home Assistant is already live.
 
 ## Run
 
@@ -12,18 +12,24 @@ The wizard asks for:
 - Home Assistant URL
 - Pi 4 hostname
 - Pi 4 username
-- Timezone
-- Repository clone URL
+- Install directory on Pi
 
-It prints a complete bootstrap flow and saves a copy to:
+If Pi is not flashed yet, the wizard prints a concrete Raspberry Pi Imager flash checklist and exits cleanly.
 
-`docs/setup-guides/pi4-setup-<timestamp>.md`
+The wizard checks `.env` and `infra/docker/.env.pi4` first.
+If any value is missing (or still `REPLACE_ME`), it asks the user and fills it interactively.
 
 ## What It Covers
 
-- Phase 1: SD card flashing with Raspberry Pi Imager
-- Phase 2: first boot package prep + repo bootstrap on Pi 4
-- Phase 3: n8n/HA integration and validation checks
+- SSH into Pi 4 and verify connectivity
+- Print flash instructions when Pi is not yet ready
+- Install base packages and Docker (if missing)
+- Sync this repository to the Pi
+- Run bootstrap/init scripts on the Pi
+- Bring up n8n/Ollama/Nginx stack
+- Verify Home Assistant URL reachability from Pi
+
+The wizard performs setup directly; it does not generate Markdown setup guides.
 
 ## Important Locks Included
 

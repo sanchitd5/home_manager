@@ -9,15 +9,13 @@ Local-first Home Management scaffold for Raspberry Pi.
 
 ## Quick Start
 
-1. Copy `.env.example` to `.env` and fill placeholders.
-2. If Pi 4 is not flashed yet, run `./scripts/bootstrap/setup-wizard.sh` and follow the generated guide.
-3. Copy `infra/docker/.env.pi4.example` to `infra/docker/.env.pi4` and fill values.
-4. Run `scripts/bootstrap/check-prereqs.sh`.
-5. Run `scripts/bootstrap/init-repo.sh`.
-6. Configure Pi 4 services with `scripts/install/pi4-setup.sh`.
-7. Apply Home Assistant files from `home-assistant/` on Pi 5.
-8. Import n8n workflows from `n8n/workflows/`.
-9. Flash `esphome/cyd-home-manager.yaml`.
+1. Choose one setup path:
+2. Wizard path (recommended): flash Pi 4, then run `./scripts/bootstrap/setup-wizard.sh` from your workstation.
+3. The wizard asks for any missing config values in `.env` and `infra/docker/.env.pi4`.
+4. Manual path: run `scripts/bootstrap/check-prereqs.sh`, `scripts/bootstrap/init-repo.sh`, then `scripts/install/pi4-setup.sh` on Pi 4.
+5. Apply Home Assistant files from `home-assistant/` on Pi 5.
+6. Import n8n workflows from `n8n/workflows/`.
+7. Flash `esphome/cyd-home-manager.yaml`.
 
 ## Repo Layout
 

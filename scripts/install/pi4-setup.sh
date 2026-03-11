@@ -15,6 +15,11 @@ if ! command -v docker >/dev/null 2>&1; then
   sudo usermod -aG docker "${USER}"
 fi
 
+if ! docker compose version >/dev/null 2>&1; then
+  echo "[pi4-setup] Installing Docker Compose plugin"
+  sudo apt-get install -y docker-compose-plugin
+fi
+
 mkdir -p "${ROOT_DIR}/infra/docker/data/n8n"
 
 if [[ ! -f "${ROOT_DIR}/infra/docker/.env.pi4" ]]; then
@@ -23,7 +28,7 @@ if [[ ! -f "${ROOT_DIR}/infra/docker/.env.pi4" ]]; then
 fi
 
 echo "[pi4-setup] Starting Pi4 stack"
-docker compose --env-file "${ROOT_DIR}/infra/docker/.env.pi4" \
+sudo docker compose --env-file "${ROOT_DIR}/infra/docker/.env.pi4" \
   -f "${ROOT_DIR}/infra/docker/docker-compose.pi4.yml" up -d
 
 echo "[pi4-setup] Done. Log out/in if docker group was just applied."

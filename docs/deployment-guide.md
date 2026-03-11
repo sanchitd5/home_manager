@@ -13,14 +13,12 @@ Deploy the scaffold to Pi 4 and Pi 5 with minimal operator ambiguity.
 
 ## Steps
 
-1. If Pi 4 is unflashed, run `./scripts/bootstrap/setup-wizard.sh` on your workstation and follow the generated flash + bootstrap guide.
-2. Clone repository onto Pi 4.
-3. Configure `.env` and `infra/docker/.env.pi4`.
-4. Run `scripts/bootstrap/check-prereqs.sh`.
-5. Run `scripts/bootstrap/init-repo.sh`.
-6. Run `scripts/install/pi4-setup.sh`.
-7. Copy Home Assistant YAML files to Pi 5.
-8. Import n8n workflows and bind credentials.
+1. Flash Pi 4 if needed.
+2. Run `./scripts/bootstrap/setup-wizard.sh` on your workstation.
+3. The wizard asks for any missing `.env` and `infra/docker/.env.pi4` values.
+4. Wizard SSHes to Pi 4, syncs repo + env files, installs dependencies, and starts services.
+5. Copy Home Assistant YAML files to Pi 5.
+6. Import n8n workflows and bind credentials.
 
 ## Validation
 
